@@ -34,7 +34,7 @@ public class Smoke {
     }
 
     @Test
-    public void smoke() throws Exception {
+    public void inputTextGeneral() throws Exception {
     	
     	HtmlPage initialPage = webClient.getPage(url);
     	
@@ -42,6 +42,12 @@ public class Smoke {
     	String inputXpath = "//input[contains(@id,':text')]";
     	String buttonXpath = "//button[@type='submit']";
     	String modelValueXpath = "//span[contains(@id,':modelValue')]";
+    	
+    	
+    	initialPage.getElementsByTagName("input");
+    	
+    	HtmlTextInput input = (HtmlTextInput) initialPage.getFirstByXPath(inputXpath);
+    	input.type("");
     	
     	List<HtmlTextInput> inputList = (List<HtmlTextInput>) initialPage.getByXPath(inputXpath);
     	List<HtmlButton> buttonList = (List<HtmlButton>) initialPage.getByXPath(buttonXpath);
@@ -63,7 +69,10 @@ public class Smoke {
         	}
         }
         
-        assertTrue(modelValueList.get(0).getTextContent().contains(magic));
+        assertTrue(
+        	"modelValue should contain " + magic + ", but contains " + modelValueList.get(0).getTextContent(), 
+        	modelValueList.get(0).getTextContent().contains(magic)
+        );
         
 //        String xml = page.asXml();
 //        System.out.println("xml = " + xml);
