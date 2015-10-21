@@ -2,6 +2,8 @@ package com.liferay.faces.test.showcase;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,7 +16,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
 
 public class AlloyInputText {
 
-    private String inputTextUrl = "http://localhost:8080/alloy-showcase-webapp-2.0.0-SNAPSHOT/web/guest/showcase/-/component/alloy/inputtext";
+    private String inputTextUrl = "http://localhost:8080/alloy-showcase-webapp-3.0.0-SNAPSHOT/web/guest/showcase/-/component/alloy/inputtext";
     private String url;
 
     private WebClient webClient;
@@ -33,7 +35,7 @@ public class AlloyInputText {
     @Test
     public void alloyInputTextGeneral() throws Exception {
 
-      url = inputTextUrl + "/general";
+    	url = inputTextUrl + "/general";
     	HtmlPage initialPage = webClient.getPage(url);
 
     	String magic = "Hello World!";
@@ -47,37 +49,87 @@ public class AlloyInputText {
 
     	if (input != null) {
     		input.type(magic);
-    		System.out.println("inputList.getValueAttribute() = " + input.getValueAttribute());
+    		System.out.println("input.getValueAttribute() = " + input.getValueAttribute());
     	}
 
         if (submit != null) {
         	HtmlPage pageAfterSubmit = (HtmlPage) submit.click();
         	webClient.waitForBackgroundJavaScriptStartingBefore(100);
         	
-        	System.out.println("pagey.isHtmlPage() = " + pageAfterSubmit.isHtmlPage());
+        	System.out.println("pageAfterSubmit.isHtmlPage() = " + pageAfterSubmit.isHtmlPage());
         	modelValueSpan = pageAfterSubmit.getFirstByXPath(modelValueXpath);
         	if (modelValueSpan != null) {
         		System.out.println("modelValueList.getTextContent() = " + modelValueSpan.getTextContent());
         	}
         }
-        
+
         assertTrue(modelValueSpan.getTextContent().contains(magic));
-        
-//        String xml = page.asXml();
-//        System.out.println("xml = " + xml);
 
     }
     
     @Test
     public void alloyInputTextConversion() throws Exception {
-    	
-      url = inputTextUrl + "/conversion";
+
+    	url = inputTextUrl + "/conversion";
     	HtmlPage initialPage = webClient.getPage(url);
-    	
-    	String magic = "Hello World!";
+
+    	String magic = "Apr 3, 0033";
     	String inputXpath = "//input[contains(@id,':text')]";
     	String buttonXpath = "//button[@type='submit']";
     	String modelValueXpath = "//span[contains(@id,':modelValue')]";
+
+    	List<HtmlTextInput> inputList = (List<HtmlTextInput>) initialPage.getByXPath(inputXpath);
+    	List<HtmlButton> submitList = (List<HtmlButton>) initialPage.getByXPath(buttonXpath);
+
+    	// test for the left column
+    	if (inputList != null) {
+    		HtmlTextInput inputText = (HtmlTextInput) inputList.get(0);
+    		System.out.println("0 before inputText.getValueAttribute() = " + inputText.getValueAttribute());
+    		inputText.setValueAttribute("");
+    		inputText.type(magic);
+    		System.out.println("0 after inputText.getValueAttribute() = " + inputText.getValueAttribute());
+    	}
+    	
+    	if (submitList != null) {
+    		HtmlButton submit = (HtmlButton) submitList.get(0);
+        	HtmlPage pageAfterSubmit = (HtmlPage) submit.click();
+        	webClient.waitForBackgroundJavaScriptStartingBefore(100);
+        	
+        	List<HtmlSpan> modelValueSpanList = (List<HtmlSpan>) pageAfterSubmit.getByXPath(modelValueXpath);
+        	HtmlSpan modelValueSpan = (HtmlSpan) modelValueSpanList.get(0);
+        	if (modelValueSpan != null) {
+        		System.out.println("0 modelValueSpan.getTextContent() = " + modelValueSpan.getTextContent());
+        	}
+        	assertTrue("modelValueSpan should contain " + magic + ", but it contains '" + modelValueSpan.getTextContent() + "'", 
+        		modelValueSpan.getTextContent().contains(magic)
+        	);
+    	}
+    	
+    	// test for the right column
+    	magic = "04/03/0033";
+    	
+    	if (inputList != null) {
+    		HtmlTextInput inputText = (HtmlTextInput) inputList.get(1);
+    		System.out.println("1 before inputText.getValueAttribute() = " + inputText.getValueAttribute());
+    		inputText.setValueAttribute("");
+    		inputText.type(magic);
+    		System.out.println("1 after inputText.getValueAttribute() = " + inputText.getValueAttribute());
+    	}
+    	
+    	if (submitList != null) {
+    		HtmlButton submit = (HtmlButton) submitList.get(1);
+        	HtmlPage pageAfterSubmit = (HtmlPage) submit.click();
+        	webClient.waitForBackgroundJavaScriptStartingBefore(100);
+        	
+        	List<HtmlSpan> modelValueSpanList = (List<HtmlSpan>) pageAfterSubmit.getByXPath(modelValueXpath);
+        	HtmlSpan modelValueSpan = (HtmlSpan) modelValueSpanList.get(1);
+        	if (modelValueSpan != null) {
+        		System.out.println("1 modelValueSpan.getTextContent() = " + modelValueSpan.getTextContent());
+        	}
+        	assertTrue("modelValueSpan should contain " + magic + ", but it contains '" + modelValueSpan.getTextContent() + "'", 
+        		modelValueSpan.getTextContent().contains(magic)
+        	);
+    	}
     	
     }
     
