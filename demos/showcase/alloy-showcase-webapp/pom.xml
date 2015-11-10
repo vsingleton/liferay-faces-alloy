@@ -27,6 +27,26 @@
 
 	<build>
 		<plugins>
+
+		<!-- Installs PhantomJS so it doesn't have to be pre-installed -->
+      <!-- version>phantomjs.version</version -->
+      <!-- version>phantomjs.plugin.version</version -->
+        <plugin>
+            <groupId>com.github.klieber</groupId>
+            <artifactId>phantomjs-maven-plugin</artifactId>
+            <version>0.7</version>
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>install</goal>
+                    </goals>
+                </execution>
+            </executions>
+            <configuration>
+                <version>1.9.8</version>
+            </configuration>
+        </plugin>
+
 			<plugin>
 				<artifactId>maven-install-plugin</artifactId>
 				<configuration>
@@ -52,6 +72,17 @@
 	</build>
 
 	<dependencies>
+
+		<!-- for test -->
+		<dependency>
+			<groupId>com.codeborne</groupId>
+			<artifactId>phantomjsdriver</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+
 		<!-- BEGIN: Only required for file upload -->
 		<dependency>
 			<groupId>commons-fileupload</groupId>

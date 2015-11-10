@@ -387,6 +387,16 @@
 
 	<dependencyManagement>
 		<dependencies>
+
+			<!-- for test -->
+			<!-- version>ghostdriver.version</version -->
+			<dependency>
+				<groupId>com.codeborne</groupId>
+				<artifactId>phantomjsdriver</artifactId>
+				<version>1.2.1</version>
+				<scope>test</scope>
+			</dependency>
+
 			<dependency>
 				<groupId>com.liferay.faces.alloy</groupId>
 				<artifactId>liferay-faces-alloy</artifactId>
